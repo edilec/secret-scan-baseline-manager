@@ -71,3 +71,13 @@ test('CLI confines reads, rejects escaped duplicate keys, and enforces byte N/N+
 });
 
 test('severity map is pinned',()=>{assert.deepEqual(RULES,{'policy-invalid':'warning','scanner-invalid':'warning','baseline-invalid':'warning','export-incomplete':'warning','scan-empty':'warning','limit-exceeded':'warning','input-unreadable':'warning','new-finding':'error','exception-expired':'error','approval-owner-missing':'error','approval-reason-missing':'error','stale-baseline':'error'});});
+
+test('format-only approval reason fails while readable reason remains approved',()=>{
+  assert.equal(audit(scanner,baseline).status,'pass');
+  const invisible='\u200b';
+  const altered={...baseline,entries:[{...entry,reason:invisible}]};
+  const report=audit(scanner,altered);
+  assert.equal(report.status,'fail');
+  assert.ok(report.findings.some(f=>f.ruleId==='approval-reason-missing'));
+  assert.equal(JSON.stringify(report).includes(invisible),false);
+});

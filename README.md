@@ -11,6 +11,8 @@ The synthetic examples exit 0 and 1. `--help` prints usage to stderr; normal run
 
 ## Input and approval model
 
+Approval reasons must be readable: control, line-separator, and Unicode format characters (including zero-width U+200B) are rejected. A format-only reason cannot approve a finding.
+
 Policy is `{"schemaVersion":"1","asOf":"2026-09-26T00:00:00Z"}`. Scanner export is `{"schemaVersion":"1","complete":true,"scannedFiles":3,"findings":[{"fingerprint":"<64 lowercase hex>","ruleId":"synthetic-pattern","file":"src/example.txt","line":12}]}`. Baseline is `{"schemaVersion":"1","complete":true,"entries":[{"fingerprint":"<same>","ruleId":"synthetic-pattern","file":"src/example.txt","line":12,"owner":"team-a","reason":"synthetic test waiver","expiresAt":"2026-10-01T00:00:00Z"}]}`. No raw match text is allowed in either schema. A baseline approves **only** the exact fingerprint, rule, relative file, and line; reappearance elsewhere is a new finding even with the same fingerprint. Approval owner and reason must be usable, and expiry must be later than declared `asOf`. Duplicate exact scopes are ambiguous. An unmatched baseline is stale when a scanner export declares complete coverage. A complete empty scan can pass only with `scannedFiles > 0` and no stale baseline entries. The checker trusts the scanner's `complete` and `scannedFiles` assertions; it cannot independently verify scanner coverage.
 
 | Rule ID | Severity | Meaning |

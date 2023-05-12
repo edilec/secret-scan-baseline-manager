@@ -6,7 +6,7 @@ const only=(x,keys)=>Object.keys(x).every(k=>keys.includes(k));
 const cmp=(a,b)=>a<b?-1:a>b?1:0;
 const slug=x=>typeof x==='string'&&/^[a-z][a-z0-9-]{0,127}$/.test(x);
 const file=x=>typeof x==='string'&&x.length>0&&x.length<=512&&!x.startsWith('/')&&!x.split('/').some(p=>p===''||p==='.'||p==='..')&&!/[\u0000-\u001f\u007f-\u009f\\\u200e\u200f\u202a-\u202e\u2066-\u2069]/u.test(x);
-const reason=x=>typeof x==='string'&&x.trim().length>0&&x.length<=256&&!/[\u0000-\u001f\u007f-\u009f\u200e\u200f\u202a-\u202e\u2066-\u2069]/u.test(x);
+const reason=x=>typeof x==='string'&&x.trim().length>0&&x.length<=256&&!/[\u0000-\u001f\u007f-\u009f\u2028\u2029\p{Cf}]/u.test(x);
 const instant=x=>typeof x==='string'&&/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?Z$/.test(x)&&Number.isFinite(Date.parse(x))&&new Date(x).toISOString().slice(0,19)===x.slice(0,19);
 const identity=x=>obj(x)&&/^[0-9a-f]{64}$/.test(x.fingerprint)&&slug(x.ruleId)&&file(x.file)&&Number.isSafeInteger(x.line)&&x.line>=1;
 const scope=x=>`${x.fingerprint}\0${x.ruleId}\0${x.file}\0${x.line}`;

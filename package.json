@@ -1,0 +1,20 @@
+{
+  "name": "secret-scan-baseline-manager",
+  "version": "0.1.0",
+  "description": "Maintain an approved secret-scan baseline without hiding new findings.",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "bin": { "secret-scan-baseline-manager": "bin/secret-scan-baseline-manager.mjs" },
+  "scripts": {
+    "lint": "node --check src/index.mjs && node --check src/cli.mjs && node --check src/json-keys.mjs && node --check bin/secret-scan-baseline-manager.mjs",
+    "test": "node --test",
+    "check": "npm run lint && npm test"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/edilec/secret-scan-baseline-manager"
+  }
+}
